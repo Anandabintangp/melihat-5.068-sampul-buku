@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Scrollytelling analisis 5.068 sampul buku sastra Indonesia periode 2000–2025.">
+  <title>Melihat 5.068 Sampul Buku: Kartografi Sampul Sastra Indonesia</title>
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#pengantar">Lewati ke isi</a>
+  <nav class="site-nav" aria-label="Navigasi bagian">
+    <a class="brand" href="#top">Kartografi Sampul Sastra Indonesia</a>
+    <div class="nav-links">
+      <a href="#pengantar">Pengantar</a>
+      <a href="#metode">Metode</a>
+      <a href="#genre">Genre</a>
+      <a href="#warna">Warna</a>
+      <a href="#tipografi">Tipografi</a>
+      <a href="#ilustrasi">Ilustrasi</a>
+      <a href="#rabun">Refleksi</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="cover-wall" id="cover-wall" aria-hidden="true"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-copy">
+      <p class="hero-kicker">Esai humaniora digital dan distant viewing</p>
+      <h1>Melihat 5.068 Sampul Buku, Membaca Representasi Wajah Sastra Indonesia</h1>
+      <p class="hero-deck">Analisis komputasional atas warna, tipografi, dan gaya ilustrasi pada sampul buku sastra Indonesia di Goodreads, periode 2000–2025.</p>
+      <div class="hero-meta">
+        <span>Data diambil 30 Maret 2026</span>
+        <span>Gulir untuk membaca</span>
+        <span id="data-build-status">Memuat data</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="chapter" id="pengantar">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">01 · Pengantar</p>
+          <h2>Jangan menilai buku dari sampulnya, adagium yang selama ini kerap ditafsirkan secara serampangan.</h2>
+        </div>
+        <div class="prose">
+          <p class="lede">Gérard Genette dalam <i>Paratexts: Thresholds of Interpretation</i> menjelaskan bahwa sampul buku merupakan bagian dari periteks yang mengitari teks utama sebagai ancangan awal bagi pembaca untuk memahami sebuah teks.</p>
+          <p>Sebuah teks tanpa parateks tidak akan eksis, sementara parateks akan selalu eksis. Bahkan ketika isi sebuah buku hilang, seperti sejumlah karya Pramoedya Ananta Toer yang hanya diketahui melalui sampul atau judulnya karena teksnya dihilangkan Orde Baru, parateks tetap berdiri sebagai penanda opresi politik dan kekerasan budaya. Makna sastra kemudian dapat diproduksi di luar teks.</p>
+          <p>Di rak toko buku, sampul dihadapkan ke depan untuk menarik perhatian. Di Goodreads, sampul menjadi epiteks, yaitu hal di luar isi teks yang memengaruhi bagaimana pembaca menilai sebuah buku, sekaligus menentukan apakah sebuah buku layak dimasukkan ke rak bacaan.</p>
+          <p>Namun, pembaca tidak memiliki basis data yang kuat untuk menilai keterkaitan warna, tipografi, dan ilustrasi dengan genre. Literasi genre selama ini bertumpu pada intuisi, seperti ungkapan “dari yang pernah saya lihat, buku ini tampaknya bergenre tertentu”.</p>
+          <p>Esai ini mencoba memformulasi intuisi tersebut melalui pendekatan <i>distant viewing</i> terhadap <strong data-stat="n_books">5.068</strong> sampul buku sastra Indonesia. Analisis dibatasi pada tiga aspek visual utama, yaitu warna, tipografi, dan ilustrasi.</p>
+        </div>
+        <div class="stat-line" aria-label="Ringkasan korpus">
+          <div><strong data-stat="n_books">5.068</strong><span>sampul buku dianalisis</span></div>
+          <div><strong data-stat="raw_genre_labels">132</strong><span>label genre mentah ditemukan</span></div>
+          <div><strong><span data-stat="year_min">2000</span>–<span data-stat="year_max">2025</span></strong><span>rentang tahun terbit</span></div>
+        </div>
+        <p class="data-note">Angka dalam halaman ini tidak ditulis ulang secara manual. Seluruh visual dibentuk dari <code>summary.json</code> yang dihasilkan oleh skrip <code>build_data.py</code> dari <code>data.csv</code>.</p>
+      </div>
+    </section>
+
+    <section class="chapter dark" id="metode">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">02 · Strategi Pembacaan Jauh</p>
+          <h2>Mata manusia tidak dapat mengkuantifikasi 5.068 sampul sekaligus. Komputer dapat membantu membuat petanya.</h2>
+        </div>
+        <div class="prose">
+          <p>Sebuah gambar adalah dunia yang dibentuk dari jutaan piksel. Cara kita mengenali wajah manusia atau hewan dari hubungan antarpiksel merupakan konsep dasar <i>distant viewing</i> yang dikembangkan Arnold dan Tilton, dengan inspirasi dari <i>distant reading</i> Franco Moretti.</p>
+          <p>Keduanya merespons praktik <i>close reading</i> yang cenderung memperlakukan sebagian teks sebagai representasi keseluruhan. Dalam konteks ini, pembacaan jauh tidak menggantikan pembacaan dekat. Ia membuat peta agar pembacaan dekat dapat dilakukan secara lebih terarah dan tidak semata bergantung pada karya yang telah dianggap kanonik.</p>
+        </div>
+        <div class="pipeline" aria-label="Pipeline analisis">
+          <div class="pipeline-step"><strong>1</strong><b>Scraping</b><span>Sampul dan metadata Goodreads</span></div>
+          <div class="pipeline-step"><strong>2</strong><b>Pembersihan</b><span>Validasi tahun, angka, dan nama berkas</span></div>
+          <div class="pipeline-step"><strong>3</strong><b>Warna</b><span>K-Means pada ruang HSV, sebelas kategori</span></div>
+          <div class="pipeline-step"><strong>4</strong><b>Tipografi</b><span>EasyOCR, pencocokan judul, dan CLIP</span></div>
+          <div class="pipeline-step"><strong>5</strong><b>Ilustrasi</b><span>CLIP zero-shot, sepuluh kategori gaya</span></div>
+          <div class="pipeline-step"><strong>6</strong><b>Interpretasi</b><span>Visualisasi menjadi pijakan pembacaan manusia</span></div>
+        </div>
+        <div class="prose" style="margin-top:40px">
+          <p>Proses tersebut tidak linear. Galat dapat baru terlihat ketika hasil divisualisasikan, sehingga pembersihan dan anotasi perlu diperiksa kembali. Dalam kerangka humaniora digital, mesin tidak menghapus subjektivitas. Pertanyaan, kategori, dan batas analisis tetap dibentuk oleh keputusan peneliti.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="genre">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">03 · Membaca Genre</p>
+          <h2>Genre tidak lahir secara <i>tabula rasa</i>. Ia dibentuk melalui praktik pelabelan komunitas pembaca.</h2>
+        </div>
+        <div class="scrolly" data-scrolly="genre">
+          <div class="scrolly-text">
+            <article class="step is-active" data-state="all">
+              <span class="step-label">Seluruh pasangan</span>
+              <p>Goodreads melabeli genre melalui mekanisme <i>crowdsourcing</i>. Dari <span data-stat="n_books">5.068</span> buku, ditemukan <span data-stat="raw_genre_labels">132</span> label genre mentah yang tidak berdiri sendiri. Grafik menggunakan koefisien overlap, yaitu jumlah irisan dibagi jumlah buku pada genre yang lebih kecil. Ukuran ini menunjukkan seberapa jauh satu label terkandung dalam label lain.</p>
+            </article>
+            <article class="step" data-state="novel">
+              <span class="step-label">Klaster bentuk</span>
+              <p>Novel menjadi wadah dominan bagi tema populer. Sebanyak 158 dari 195 buku berlabel Drama juga berlabel Novel, menghasilkan koefisien overlap 81,0%. Sebaliknya, puisi hanya beririsan 3,9% dengan romansa. Puisi cenderung diperlakukan pembaca sebagai kategori yang telah cukup menjelaskan dirinya sendiri.</p>
+            </article>
+            <article class="step" data-state="romansa">
+              <span class="step-label">Romansa sebagai magnet</span>
+              <p>Romansa menjadi jaring pengait paling kuat. Sebanyak 93,8% Chick Lit, 89,1% Persahabatan, 80,1% Remaja, 76,1% Dewasa, dan 73,1% Keluarga beririsan dengan Romansa. Pola ini menunjukkan bahwa label demografis dan relasional kerap bermuara pada tema percintaan.</p>
+            </article>
+            <article class="step" data-state="mode">
+              <span class="step-label">Kedekatan mode naratif</span>
+              <p>Fiksi Sains dan Fantasi memiliki koefisien overlap 68,8%, Fantasi dan Petualangan 55,8%, sedangkan Horor dan Thriller/Misteri 47,3%. Kedekatan ini tidak hanya lahir dari perilaku pelabelan, tetapi juga dari kemiripan struktur naratif, seperti penjelajahan, ancaman, dan ketegangan.</p>
+            </article>
+          </div>
+          <div class="sticky-figure">
+            <figure class="figure-shell">
+              <div class="figure-head">
+                <h3>Overlap genre</h3>
+                <p class="figure-note">Koefisien overlap, bukan persentase terhadap seluruh korpus</p>
+              </div>
+              <div class="figure-controls" data-controls="genre">
+                <button type="button" data-state="all" aria-pressed="true">Semua</button>
+                <button type="button" data-state="novel" aria-pressed="false">Bentuk</button>
+                <button type="button" data-state="romansa" aria-pressed="false">Romansa</button>
+                <button type="button" data-state="mode" aria-pressed="false">Mode naratif</button>
+              </div>
+              <div class="chart-area" id="genre-chart"></div>
+              <figcaption class="figure-note">Arah panah tidak menunjukkan kausalitas. Angka memperlihatkan kekuatan irisan antara dua label genre.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter dark" id="warna">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">04 · Pada Mulanya adalah Warna</p>
+          <h2>Warna adalah teks visual pertama yang terlihat, jauh sebelum judul dapat dibaca.</h2>
+        </div>
+        <div class="scrolly" data-scrolly="warna">
+          <div class="scrolly-text">
+            <article class="step is-active" data-state="global">
+              <span class="step-label">Komposisi korpus</span>
+              <p>Mata manusia mengategorikan warna sebagai persepsi, misalnya merah muda. Mesin membacanya sebagai kombinasi nilai numerik. Agregasi lima warna utama pada setiap sampul menunjukkan bahwa putih menempati 30,7% piksel, diikuti oranye 14,4%, biru 13,0%, hitam 8,7%, dan merah 5,8%.</p>
+            </article>
+            <article class="step" data-state="populer">
+              <span class="step-label">Fiksi populer</span>
+              <p>Genre yang berkait erat dengan romansa didominasi putih. Proporsinya mencapai 37,4% pada Keluarga, 35,2% pada Chick Lit, 34,5% pada Romansa, 34,4% pada Persahabatan, dan 31,9% pada Drama. Homogenisasi ini menunjukkan bahwa warna tidak sekadar merepresentasikan isi, tetapi juga menyesuaikan sampul dengan konvensi pasar fiksi populer.</p>
+            </article>
+            <article class="step" data-state="gelap">
+              <span class="step-label">Horor dan misteri</span>
+              <p>Horor dan Thriller/Misteri memiliki proporsi hitam masing-masing 20,0% dan 17,4%. Merah justru hanya 4,1% pada Horor dan 8,4% pada Thriller/Misteri. Artinya, konvensi visual ketegangan lebih kuat dibangun melalui kombinasi hitam, abu-abu, dan putih daripada melalui simbol darah yang dianggap universal.</p>
+            </article>
+            <article class="step" data-state="biru">
+              <span class="step-label">Cakrawala spekulatif</span>
+              <p>Biru menjadi warna tertinggi pada Fiksi Sains sebesar 21,3%, Aksi 19,4%, dan Petualangan 18,8%. Pada Fantasi, biru berada di posisi kedua sebesar 18,8% setelah putih 21,9%. Pola ini memungkinkan biru dibaca sebagai penanda cakrawala, perjalanan, dan ruang spekulatif, tetapi maknanya tetap bergantung pada komposisi warna lain.</p>
+            </article>
+            <article class="step" data-state="konteks">
+              <span class="step-label">Makna yang bergantung konteks</span>
+              <p>Fiksi Sejarah memadukan putih 25,5%, oranye 19,8%, cokelat 8,4%, dan hitam 9,0%, membentuk register visual yang dekat dengan sepia dan arsip. Anak-anak dan Komedi sama-sama memakai palet hangat, tetapi Kartografi menunjukkan bahwa satu warna tidak pernah membawa makna sendirian.</p>
+              <blockquote class="quote">Warna sampul buku dipilih bukan hanya untuk merepresentasikan isi teks, tetapi juga untuk memaksimalkan daya tarik visual kepada pembaca.</blockquote>
+            </article>
+          </div>
+          <div class="sticky-figure">
+            <figure class="figure-shell">
+              <div class="figure-head">
+                <h3 id="warna-title">Distribusi warna seluruh korpus</h3>
+                <p class="figure-note">Rata-rata proporsi piksel dari lima warna utama setiap sampul</p>
+              </div>
+              <div class="figure-controls" data-controls="warna">
+                <button type="button" data-state="global" aria-pressed="true">Korpus</button>
+                <button type="button" data-state="populer" aria-pressed="false">Fiksi populer</button>
+                <button type="button" data-state="gelap" aria-pressed="false">Horor</button>
+                <button type="button" data-state="biru" aria-pressed="false">Spekulatif</button>
+                <button type="button" data-state="konteks" aria-pressed="false">Konteks</button>
+              </div>
+              <div id="warna-bar"></div>
+              <div class="chart-area" id="warna-chart"></div>
+              <figcaption class="figure-note" id="warna-caption">Arahkan kursor pada sel untuk melihat nilai persis.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="tipografi">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">05 · Tipografi Mengubah Nuansa</p>
+          <h2>Bayangkan seluruh karya Pramoedya diterbitkan ulang dengan Comic Sans.</h2>
+        </div>
+        <div class="scrolly" data-scrolly="tipografi">
+          <div class="scrolly-text">
+            <article class="step is-active" data-state="global">
+              <span class="step-label">Empat kategori</span>
+              <p>Pemilihan huruf bukan sekadar penunjang estetika. Esai ini mengklasifikasikan tipografi judul ke dalam Serif, Script, Sans-serif, dan Fancy. Dari 5.068 sampul, Serif berjumlah 2.343, Script 1.402, Sans-serif 702, dan Fancy 621.</p>
+            </article>
+            <article class="step" data-state="formal">
+              <span class="step-label">Kesan formal dan historis</span>
+              <p>Serif mencapai 65,7% pada Fiksi Sejarah, 64,1% pada Thriller/Misteri, dan 66,7% pada Horor. Namun, kesamaan kategori tidak berarti kesamaan nuansa. Pada Fiksi Sejarah, Rozha One muncul pada 21,3% sampul. Pada Horor, Creepster hanya 5,4%, sehingga identitas horor tidak dibangun oleh Fancy semata.</p>
+            </article>
+            <article class="step" data-state="romansa">
+              <span class="step-label">Kesan personal</span>
+              <p>Script menjadi kategori terbesar pada Romansa sebesar 35,9%, Persahabatan 39,5%, Keluarga 40,7%, dan Slice of Life 40,0%. Bentuk huruf yang menyerupai tulisan tangan memberi kesan personal, seperti surat dan catatan intim yang kerap hadir dalam mode naratif romansa.</p>
+            </article>
+            <article class="step" data-state="ketidakpastian">
+              <span class="step-label">Membaca dengan kehati-hatian</span>
+              <p>Klasifikasi tipografi memiliki keterbatasan teknis. Sebanyak <span data-stat="typeface_low_conf_pct">66,4</span>% baris ditandai berkepercayaan rendah dalam kolom audit. Karena itu, peta tipografi harus dibaca sebagai kecenderungan korpus, bukan sebagai identifikasi font yang sepenuhnya pasti untuk setiap sampul.</p>
+            </article>
+          </div>
+          <div class="sticky-figure">
+            <figure class="figure-shell">
+              <div class="figure-head">
+                <h3 id="tipografi-title">Distribusi typeface seluruh korpus</h3>
+                <p class="figure-note">Kategori akhir menggunakan kolom <code>typeface_paper</code></p>
+              </div>
+              <div class="figure-controls" data-controls="tipografi">
+                <button type="button" data-state="global" aria-pressed="true">Korpus</button>
+                <button type="button" data-state="formal" aria-pressed="false">Formal</button>
+                <button type="button" data-state="romansa" aria-pressed="false">Romansa</button>
+                <button type="button" data-state="ketidakpastian" aria-pressed="false">Audit</button>
+              </div>
+              <div class="chart-area" id="tipografi-chart"></div>
+              <div class="detail-strip">
+                <div><h4>Font yang sering muncul</h4><div id="font-detail"></div></div>
+                <div><h4>Catatan pembacaan</h4><p id="tipografi-caption">Serif merupakan kategori terbesar dalam korpus.</p></div>
+              </div>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter dark" id="ilustrasi">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">06 · Gaya Ilustrasi sebagai Nyawa</p>
+          <h2>Jika warna menarik mata dan tipografi mengatur nada, ilustrasi menggerakkan hubungan keduanya.</h2>
+        </div>
+        <div class="scrolly" data-scrolly="ilustrasi">
+          <div class="scrolly-text">
+            <article class="step is-active" data-state="global">
+              <span class="step-label">Sepuluh kategori</span>
+              <p>CLIP mengklasifikasikan ilustrasi pada skala gambar penuh ke dalam sepuluh kategori. Secara global, Kartunal mencapai 27,2%, Minimalis 25,9%, dan Ekspresionisme 18,5%. Tiga kategori ini mencakup sebagian besar korpus.</p>
+            </article>
+            <article class="step" data-state="tren">
+              <span class="step-label">Perubahan per tahun</span>
+              <p>Tren tahunan menunjukkan pergeseran antara gaya Kartunal dan Minimalis. Perubahan tersebut perlu dibaca bersama jumlah buku per tahun, sebab persentase pada tahun dengan korpus kecil lebih mudah berubah. Grafik tidak menyatakan bahwa perubahan gaya disebabkan oleh satu faktor tunggal.</p>
+            </article>
+            <article class="step" data-state="anak">
+              <span class="step-label">Kartunal yang relatif ajek</span>
+              <p>Anak-anak memiliki proporsi Kartunal 61,7%, sedangkan Komedi 62,1%. Pada kedua genre ini, kartunal berfungsi sebagai kode visual yang relatif stabil untuk menandai ekspresi, kelucuan, dan kemudahan pengenalan karakter.</p>
+            </article>
+            <article class="step" data-state="horor">
+              <span class="step-label">Ekspresionisme dan ketegangan</span>
+              <p>Horor menempatkan Ekspresionisme sebagai gaya terbesar sebesar 33,3%. Thriller/Misteri lebih tersebar, yaitu Kartunal 27,6%, Ekspresionisme 24,7%, dan Minimalis 24,1%. Kedekatan mode naratif tidak serta-merta menghasilkan pilihan ilustrasi yang identik.</p>
+            </article>
+            <article class="step" data-state="spekulatif">
+              <span class="step-label">Dunia spekulatif</span>
+              <p>Fiksi Sains menempatkan Dekoratif sebesar 25,0%, sementara Fantasi lebih banyak menggunakan Kartunal 28,0% dan Ekspresionisme 20,6%. Fiksi Sejarah didominasi Ekspresionisme 23,1% dan Minimalis 21,3%. Pola ini memperlihatkan bahwa “imajinatif” bukan kategori visual tunggal.</p>
+            </article>
+          </div>
+          <div class="sticky-figure">
+            <figure class="figure-shell">
+              <div class="figure-head">
+                <h3 id="ilustrasi-title">Distribusi gaya ilustrasi seluruh korpus</h3>
+                <p class="figure-note">Kategori akhir menggunakan kolom <code>corak_ilustrasi</code></p>
+              </div>
+              <div class="figure-controls" data-controls="ilustrasi">
+                <button type="button" data-state="global" aria-pressed="true">Korpus</button>
+                <button type="button" data-state="tren" aria-pressed="false">Tren</button>
+                <button type="button" data-state="anak" aria-pressed="false">Anak dan Komedi</button>
+                <button type="button" data-state="horor" aria-pressed="false">Horor</button>
+                <button type="button" data-state="spekulatif" aria-pressed="false">Spekulatif</button>
+              </div>
+              <div class="chart-area" id="ilustrasi-chart"></div>
+              <figcaption class="figure-note" id="ilustrasi-caption">Arahkan kursor pada elemen visual untuk melihat nilai persis.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="rabun">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">07 · Rabun Dekat Pembacaan Jauh</p>
+          <h2>Mesin dapat mengklasifikasikan jutaan piksel, tetapi interpretasi tidak berhenti pada angka.</h2>
+        </div>
+        <div class="prose">
+          <p>Dari sekitar 135 ribu buku yang disebut terbit setiap tahun di Indonesia berdasarkan data 2020, esai ini hanya menjangkau sekitar lima ribu buku. Artinya, korpus tidak dapat dianggap merepresentasikan seluruh produksi buku nasional. Ia merepresentasikan buku yang dapat dijangkau melalui katalog fiksi-asli dan puisi-asli Goodreads Indonesia, berhasil diunduh, dan dapat dianalisis mesin.</p>
+          <p>Mesin tidak memiliki kapasitas untuk memahami konteks sosial-politik sebuah warna sebelum manusia menyusun kategori dan pertanyaan. Keputusan tentang anotasi mana yang digunakan, apa yang dianggap sebagai genre, dan bagaimana hasil dibaca dibentuk secara sosial dan kultural.</p>
+          <blockquote class="quote">Pembacaan jauh bekerja seperti sensus. Ia berusaha menghitung semua yang tersedia, termasuk yang selama ini tidak memperoleh tempat dalam pembacaan kanonik.</blockquote>
+          <p>Karena itu, pembacaan jauh tidak menihilkan pembacaan dekat. Peta komputasional justru dapat mengarahkan pembacaan dekat kepada kasus yang menyimpang, berulang, atau sebelumnya tidak terlihat.</p>
+        </div>
+        <div class="cover-sample" id="closing-covers" aria-label="Sampel sampul dari korpus"></div>
+      </div>
+    </section>
+
+    <section class="chapter dark end-section" id="jassin">
+      <div class="chapter-inner">
+        <div class="chapter-heading">
+          <p class="section-kicker">08 · Dari Jassin ke Mesin</p>
+          <h2>Selama akses masih menjadi privilese, kanonisasi akan terus mereproduksi dirinya sendiri.</h2>
+        </div>
+        <div class="prose">
+          <p>H.B. Jassin dijuluki “Paus Sastra” bukan semata karena kecakapan mendokumentasikan, tetapi juga karena akses terhadap teks, jaringan penerbit, sastrawan, dan institusi yang memberinya otoritas untuk menentukan siapa yang dianggap sastrawan.</p>
+          <p>Di era digital, akses terhadap dataraya karya sastra Indonesia masih menjadi persoalan. Dari seluruh produksi buku nasional, penelitian ini hanya menjangkau sekitar 5.000 sampul. Tanpa infrastruktur akses yang memadai, pembacaan jauh yang berpotensi mengikis logika kanonisasi kehilangan pijakannya.</p>
+          <blockquote class="quote">Semua orang dapat menjadi Jassin, semua orang dapat menjadi mesin. Lahir seorang besar dan tenggelam beratus ribu. Keduanya harus dicatat, keduanya dapat tempat.</blockquote>
+          <p>Dashboard eksplorasi korpus dapat diakses melalui <a data-dashboard-link href="https://risethumdigsasindo.github.io/Kartografi-Sampul-Sastra-Indonesia/">Kartografi Sampul Sastra Indonesia</a>.</p>
+        </div>
+
+        <div class="references">
+          <details>
+            <summary>Catatan metodologis data</summary>
+            <ol>
+              <li>Jumlah 132 merujuk pada label genre mentah yang muncul dalam CSV, termasuk label umum seperti Sastra Indonesia dan Fiksi.</li>
+              <li>Romansa pada visual merupakan normalisasi label <i>Roman</i> dalam CSV. Fiksi Sains merupakan normalisasi <i>Fiksi Ilmiah</i>.</li>
+              <li>Thriller/Misteri merupakan kategori turunan yang menggabungkan buku berlabel Thriller atau Misteri.</li>
+              <li>Distribusi warna dihitung dari rata-rata proporsi lima klaster warna pada setiap sampul, sehingga totalnya mendekati 100%.</li>
+              <li>Koefisien overlap dihitung sebagai jumlah irisan dibagi jumlah buku pada genre yang lebih kecil.</li>
+            </ol>
+          </details>
+          <details>
+            <summary>Daftar pustaka ringkas</summary>
+            <ul>
+              <li>Arnold, Taylor, dan Lauren Tilton. <i>Distant Viewing: Computational Exploration of Digital Images</i>. MIT Press, 2023.</li>
+              <li>Barthes, Roland. “Semiology and the Urban.” Dalam <i>The City and the Sign</i>. Columbia University Press, 1986.</li>
+              <li>Cuthbert, Kate. <i>How to Judge a Book by Its Cover</i>. Routledge, 2025.</li>
+              <li>Genette, Gérard. <i>Paratexts: Thresholds of Interpretation</i>. Cambridge University Press, 1997.</li>
+              <li>Genette, Gérard. “The Architext.” Dalam <i>Modern Genre Theory</i>. Routledge, 2014.</li>
+              <li>Moretti, Franco. <i>Distant Reading</i>. Verso, 2013.</li>
+              <li>Radford, Alec, dkk. “Learning Transferable Visual Models From Natural Language Supervision.” ICML, 2021.</li>
+            </ul>
+          </details>
+          <p class="footer-credit">Scrollytelling ini disiapkan sebagai halaman statis untuk GitHub Pages dan sebagai sumber visual HTML yang dapat ditanam melalui iframe di Tengara.id.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/charts.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>
