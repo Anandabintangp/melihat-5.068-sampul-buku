@@ -35,13 +35,50 @@
   function showTooltip(event, html) {
     const el = ensureTooltip();
     el.innerHTML = html;
-    el.style.left = `${event.clientX}px`;
-    el.style.top = `${event.clientY}px`;
+    const x = Math.max(8, Math.min(window.innerWidth - 300, event.clientX || 8));
+    const y = Math.max(8, Math.min(window.innerHeight - 120, event.clientY || 8));
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
     el.classList.add("is-visible");
   }
   function hideTooltip() {
     if (tooltip) tooltip.classList.remove("is-visible");
   }
+
+  function selectionRegion(container) {
+    let region = container.querySelector(".chart-selection");
+    if (!region) {
+      region = document.createElement("div");
+      region.className = "chart-selection";
+      region.setAttribute("role", "status");
+      region.setAttribute("aria-live", "polite");
+      region.innerHTML = "<span>Ketuk atau pilih elemen visual untuk melihat nilai rinci.</span>";
+      container.appendChild(region);
+    }
+    return region;
+  }
+
+  function setSelection(container, html, node) {
+    container.querySelectorAll(".is-selected").forEach(item => item.classList.remove("is-selected"));
+    if (node) node.classList.add("is-selected");
+    selectionRegion(container).innerHTML = html;
+  }
+
+  function bindInteractive(node, container, html, eventLabel) {
+    node.setAttribute("role", "button");
+    node.setAttribute("aria-label", eventLabel || html.replace(/<[^>]+>/g, " "));
+    node.tabIndex = 0;
+    node.addEventListener("mousemove", event => showTooltip(event, html));
+    node.addEventListener("mouseleave", hideTooltip);
+    node.addEventListener("click", () => setSelection(container, html, node));
+    node.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        setSelection(container, html, node);
+      }
+    });
+  }
+
   function svgEl(name, attrs = {}) {
     const node = document.createElementNS(NS, name);
     Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
@@ -119,12 +156,15 @@
     const labelMap = metric === "illustrations" ? summary.labels.illustrations : {};
     const wrapper = document.createElement("div");
     wrapper.className = "heat-scroll";
+    wrapper.setAttribute("tabindex", "0");
+    wrapper.setAttribute("aria-label", "Peta panas dapat digeser secara horizontal dan vertikal");
     const grid = document.createElement("div");
     grid.className = "heatmap";
-    grid.style.gridTemplateColumns = `132px repeat(${columns.length}, minmax(38px, 1fr))`;
+    grid.style.gridTemplateColumns = `132px repeat(${columns.length}, minmax(42px, 1fr))`;
 
     const corner = document.createElement("div");
     corner.className = "heat-label";
+    corner.textContent = "Genre";
     grid.appendChild(corner);
     columns.forEach(column => {
       const header = document.createElement("div");
@@ -149,20 +189,19 @@
         cell.style.background = heatColor(value, max, options.dark ? "dark" : "light");
         cell.style.color = value / max > 0.57 ? "white" : "inherit";
         cell.textContent = fmt(value);
-        cell.tabIndex = 0;
-        const tooltipText = `<b>${genre}</b><br>${labelMap[column] || column}: ${fmt(value)}%`;
-        cell.addEventListener("mousemove", event => showTooltip(event, tooltipText));
-        cell.addEventListener("mouseleave", hideTooltip);
-        cell.addEventListener("focus", event => {
-          const rect = event.target.getBoundingClientRect();
-          showTooltip({ clientX: rect.left, clientY: rect.top }, tooltipText);
-        });
-        cell.addEventListener("blur", hideTooltip);
+        const label = labelMap[column] || column;
+        const detail = `<strong>${genre}</strong><br>${label}: ${fmt(value)}%`;
+        bindInteractive(cell, container, detail, `${genre}, ${label}, ${fmt(value)} persen`);
         grid.appendChild(cell);
       });
     });
     wrapper.appendChild(grid);
     container.appendChild(wrapper);
+    selectionRegion(container);
+    if (activeGenres.length) {
+      const first = grid.querySelector('.heat-row-active.heat-cell');
+      if (first) first.scrollIntoView({block:'nearest', inline:'nearest'});
+    }
   }
 
   function drawStackedBar(container, distribution, order, palette, labelMap = {}) {
@@ -236,7 +275,7 @@
     const margin = { top: 30, right: 80, bottom: 48, left: 52 };
     const plotW = width - margin.left - margin.right;
     const plotH = height - margin.top - margin.bottom;
-    const maxY = Math.ceil(Math.max(...rows.flatMap(r => keys.map(k => r[k] || 0))) / 5) * 5;
+    const maxY = Math.max(10, Math.ceil(Math.max(...rows.flatMap(r => keys.map(k => r[k] || 0))) / 5) * 5);
     const x = year => margin.left + (year - rows[0].year) / (rows[rows.length - 1].year - rows[0].year) * plotW;
     const y = value => margin.top + plotH - value / maxY * plotH;
     const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, role: "img", "aria-label": "Tren gaya ilustrasi per tahun" });
@@ -259,9 +298,10 @@
       const line = svgEl("polyline", { points, fill: "none", stroke: IL_COLORS[key], "stroke-width": "3", "stroke-linejoin": "round", "stroke-linecap": "round" });
       svg.appendChild(line);
       rows.forEach(r => {
-        const dot = svgEl("circle", { cx: x(r.year), cy: y(r[key] || 0), r: "3", fill: IL_COLORS[key], opacity: "0.82" });
-        dot.addEventListener("mousemove", event => showTooltip(event, `<b>${summary.labels.illustrations[key]}</b><br>${r.year}: ${fmt(r[key] || 0)}% dari ${fmtInt(r.n)} sampul`));
-        dot.addEventListener("mouseleave", hideTooltip);
+        const dot = svgEl("circle", { cx: x(r.year), cy: y(r[key] || 0), r: "5", fill: IL_COLORS[key], opacity: "0.86" });
+        const labelText = summary.labels.illustrations[key] || key;
+        const detail = `<strong>${labelText}</strong><br>${r.year}: ${fmt(r[key] || 0)}% dari ${fmtInt(r.n)} sampul`;
+        bindInteractive(dot, container, detail, `${labelText}, tahun ${r.year}, ${fmt(r[key] || 0)} persen`);
         svg.appendChild(dot);
       });
       const last = rows[rows.length - 1];
@@ -270,6 +310,7 @@
       svg.appendChild(label);
     });
     container.appendChild(svg);
+    selectionRegion(container);
   }
 
   function renderFonts(container, fonts) {

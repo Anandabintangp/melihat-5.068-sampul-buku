@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Gambar 6 | Warna Klaster 3</title><link rel="stylesheet" href="../assets/css/figures.css"></head>
+<body class="figure-page"><figure class="interactive-figure">
+<div class="figure-toolbar"><div><p class="figure-kicker">Gambar 6</p><h1>Distribusi Warna Genre Klaster 3</h1><p class="figure-deck">Pilih satu atau semua genre. Ketuk segmen warna untuk membaca nilai persis.</p></div><div class="controls"><label>Genre<select id="genre"><option value="all">Semua genre</option></select></label></div></div>
+<div class="compare-list" id="rows"></div><div class="legend-grid" id="legend"></div><div class="chart-selection" id="selection" role="status" aria-live="polite">Ketuk segmen warna untuk melihat nilai rinci.</div>
+<p class="figure-source">Genre yang ditampilkan: Fantasi, Petualangan, Fiksi Sejarah, Fiksi Sains, Aksi, dan Anak-anak.</p></figure>
+<script src="../assets/js/figure-common.js"></script><script>
+KF.loadSummary().then(s=>{
+  const gs=['Fantasi','Petualangan','Fiksi Sejarah','Fiksi Sains','Aksi','Anak-anak'],sel=document.getElementById('genre'),rows=document.getElementById('rows'),leg=document.getElementById('legend'),selection=document.getElementById('selection');
+  gs.forEach(g=>sel.add(new Option(g,g)));
+  function render(){
+    const list=sel.value==='all'?gs:[sel.value];rows.innerHTML='';
+    list.forEach(g=>{
+      const order=[...s.orders.colors].sort((a,b)=>(s.genres[g].colors[b]||0)-(s.genres[g].colors[a]||0));
+      const r=document.createElement('section');r.className='compare-row';r.innerHTML=`<h2>${g}</h2><div class="stack" role="group" aria-label="Distribusi warna ${g}"></div><div class="row-values"></div>`;
+      const st=r.querySelector('.stack'),values=r.querySelector('.row-values');
+      order.forEach(k=>{const v=s.genres[g].colors[k]||0,seg=document.createElement('button');seg.type='button';seg.className='segment';seg.style.width=v+'%';seg.style.background=KF.colorMap[k];seg.setAttribute('aria-label',`${g}, ${k}, ${KF.fmt(v)} persen`);seg.onclick=()=>{selection.innerHTML=`<strong>${g}</strong><br>${k}: ${KF.fmt(v)}%`;[...document.querySelectorAll('.segment')].forEach(x=>x.classList.remove('is-selected'));seg.classList.add('is-selected')};st.appendChild(seg);const item=document.createElement('span');item.innerHTML=`${k} <b>${KF.fmt(v)}%</b>`;values.appendChild(item)});rows.appendChild(r)
+    });
+    leg.innerHTML='';s.orders.colors.forEach(k=>{const x=document.createElement('span');x.className='legend-item';x.innerHTML=`<i style="background:${KF.colorMap[k]}"></i><span>${k}</span>`;leg.appendChild(x)})
+  }
+  sel.onchange=render;render();
+}).catch(e=>document.getElementById('rows').textContent=e.message);
+</script></body></html>

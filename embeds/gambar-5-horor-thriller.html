@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Gambar 5 | Horor dan Thriller</title><link rel="stylesheet" href="../assets/css/figures.css"></head>
+<body class="figure-page"><figure class="interactive-figure">
+<div class="figure-toolbar"><div><p class="figure-kicker">Gambar 5</p><h1>Distribusi Warna Horor dan Thriller/Misteri</h1><p class="figure-deck">Ketuk warna pada batang atau legenda untuk membandingkan nilai yang sama pada kedua genre.</p></div><div class="controls"><button type="button" id="reset">Tampilkan semua warna</button></div></div>
+<div class="compare-list" id="rows"></div><div class="legend-grid" id="legend" aria-label="Legenda warna"></div><div class="chart-selection" id="selection" role="status" aria-live="polite">Pilih satu warna untuk melihat perbandingan rinci.</div>
+<p class="figure-source">Nilai berasal dari agregasi proporsi piksel lima klaster warna setiap sampul.</p></figure>
+<script src="../assets/js/figure-common.js"></script><script>
+KF.loadSummary().then(s=>{
+  const genres=['Horor','Thriller/Misteri'],order=s.orders.colors,rows=document.getElementById('rows'),leg=document.getElementById('legend'),selection=document.getElementById('selection');let active='';
+  function detail(color){
+    if(!color){selection.textContent='Pilih satu warna untuk melihat perbandingan rinci.';return;}
+    selection.innerHTML=`<strong>${color}</strong><br>${genres.map(g=>`${g}: ${KF.fmt(s.genres[g].colors[color]||0)}%`).join(' · ')}`;
+  }
+  function render(){
+    rows.innerHTML='';
+    genres.forEach(g=>{
+      const r=document.createElement('section');r.className='compare-row';r.innerHTML=`<h2>${g}</h2><div class="stack" role="group" aria-label="Distribusi warna ${g}"></div><div class="row-values"></div>`;
+      const st=r.querySelector('.stack'),values=r.querySelector('.row-values');
+      order.forEach(k=>{
+        const v=s.genres[g].colors[k]||0,seg=document.createElement('button');
+        seg.type='button';seg.className='segment'+(active&&active!==k?' muted':'')+(active===k?' is-selected':'');seg.style.width=v+'%';seg.style.background=KF.colorMap[k];seg.title=`${k}: ${KF.fmt(v)}%`;seg.setAttribute('aria-label',`${g}, ${k}, ${KF.fmt(v)} persen`);
+        seg.onclick=()=>{active=active===k?'':k;render();detail(active)};st.appendChild(seg);
+        if(!active || active===k){const item=document.createElement('span');item.innerHTML=`${k} <b>${KF.fmt(v)}%</b>`;values.appendChild(item);}
+      });rows.appendChild(r);
+    });
+    leg.innerHTML='';order.forEach(k=>{const x=document.createElement('button');x.type='button';x.className='legend-item'+(active===k?' is-active':'');x.innerHTML=`<i style="background:${KF.colorMap[k]}"></i><span>${k}</span>`;x.onclick=()=>{active=active===k?'':k;render();detail(active)};leg.appendChild(x)});
+  }
+  document.getElementById('reset').onclick=()=>{active='';render();detail('')};render();
+}).catch(e=>document.getElementById('rows').textContent=e.message);
+</script></body></html>
