@@ -1,4 +1,5 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gambar 1 | Mosaik Sampul</title><style>
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Gambar 1 | Mosaik Sampul</title><style>
 :root{--paper:#ffffff;--ink:#171717;--muted:#666666;--rule:rgba(23,23,23,.14);--accent:#171717;--sans:Inter,Arial,"Helvetica Neue",sans-serif;--serif:Georgia,"Times New Roman",serif}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff;color:var(--ink)}body{font-family:var(--sans);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
 .app{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:clamp(12px,1.6vw,20px);gap:12px;background:#fff}
@@ -32,7 +33,22 @@ body.embedded .caption{display:none!important}
 body.embedded .app{grid-template-rows:auto minmax(0,1fr)!important}
 @media(max-width:680px){.app{padding:8px!important}.controls{display:grid!important;grid-template-columns:1fr!important}.controls label{min-width:0!important;width:100%!important}.zoomset{grid-template-columns:42px 1fr 42px 1.35fr!important}.caption h2{font-size:24px!important}}
 </style>
-</head><body><script>document.body.classList.toggle('embedded',new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top);</script><main class="app"><header class="plainhead"><div class="controls"><label>Cari judul atau penulis<input id="search" type="search" placeholder="Ketik untuk menyaring"></label><div class="zoomset"><button id="minus" aria-label="Perkecil">−</button><button id="readout" aria-label="Kembali ke tampilan penuh">100%</button><button id="plus" aria-label="Perbesar">+</button><button id="fit">Tampilkan semua</button></div></div></header><section class="mosaic-wrap" id="viewport" tabindex="0"><canvas id="canvas"></canvas><div class="hint">Roda tetikus atau cubit untuk zoom. Seret untuk menjelajah. Ketuk sampul untuk metadata.</div><article class="detail" id="detail" hidden><img id="cover" alt=""><div><h2 id="title"></h2><p id="author"></p><p id="meta"></p></div></article><div class="load-error" id="loadError" hidden></div></section><footer class="caption"><span class="sr-only" id="count">Memuat data…</span><span class="sr-only" id="quality">Mosaik penuh</span><small>Gambar 1</small><h2>Mosaik 5.068 sampul buku</h2><p>Sampul tetap terlihat pada tampilan jauh. Perbesar untuk melihat detail visual yang semakin tajam.</p></footer></main><script>
+<style id="revision-mosaic-final">
+html,body{height:auto!important;min-height:100%!important;overflow:auto!important;background:#fff!important}
+.app{height:auto!important;min-height:100%!important;grid-template-rows:auto auto auto!important;padding:10px!important;gap:10px!important;background:#fff!important}
+.plainhead{justify-content:center!important;min-height:44px!important}
+.controls{justify-content:center!important;width:100%!important}
+.controls label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.zoomset{grid-template-columns:44px 84px 44px auto!important}
+.controls button{background:#fff!important;border:1px solid #d8d8d8!important;border-radius:10px!important;min-height:42px!important;color:#171717!important}
+.controls button:hover{background:#f5f5f5!important}
+.mosaic-wrap{width:min(100%,700px)!important;aspect-ratio:911/932!important;height:auto!important;min-height:0!important;justify-self:center!important;margin:0 auto!important;background:#f3f3f3!important;border:1px solid #dedede!important;border-radius:14px!important}
+.caption{display:block!important;width:min(100%,700px)!important;margin:0 auto!important;padding:2px 0 0!important;border:0!important;color:#333!important}
+.figure-caption{margin:0!important;font:600 13px/1.5 Inter,Arial,"Helvetica Neue",sans-serif!important;color:#333!important}
+body.embedded .caption{display:block!important}
+body.embedded .app{grid-template-rows:auto auto auto!important}
+@media(max-width:680px){.app{padding:7px!important}.plainhead{min-height:40px!important}.zoomset{width:100%!important;grid-template-columns:42px 1fr 42px 1.45fr!important}.mosaic-wrap,.caption{width:100%!important}.figure-caption{font-size:12px!important}.hint{max-width:calc(100% - 20px)!important;white-space:normal!important}}
+</style></head><body><script>document.body.classList.toggle('embedded',new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top);</script><main class="app"><header class="plainhead"><div class="controls"><label>Cari judul atau penulis<input id="search" placeholder="Ketik untuk menyaring" type="search"/></label><div class="zoomset"><button aria-label="Perkecil" id="minus">−</button><button aria-label="Kembali ke tampilan penuh" id="readout">100%</button><button aria-label="Perbesar" id="plus">+</button><button id="fit">Tampilkan semua</button></div></div></header><section class="mosaic-wrap" id="viewport" tabindex="0"><canvas id="canvas"></canvas><div class="hint">Roda tetikus atau cubit untuk zoom. Seret untuk menjelajah. Ketuk sampul untuk metadata.</div><article class="detail" hidden="" id="detail"><img alt="" id="cover"/><div><h2 id="title"></h2><p id="author"></p><p id="meta"></p></div></article><div class="load-error" hidden="" id="loadError"></div></section><footer class="caption"><p class="figure-caption">Gambar 1 Mosaik Sampul Buku Sastra Indonesia dari Tahun 2000—2025</p></footer></main><script>
 function reportHeight(){try{parent.postMessage({type:'kartografi-embed-height',height:Math.ceil(document.documentElement.scrollHeight)},'*')}catch(e){}}
 addEventListener('load',reportHeight);addEventListener('resize',reportHeight,{passive:true});if('ResizeObserver'in window)new ResizeObserver(reportHeight).observe(document.body);
 const fmt=n=>Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:1});
