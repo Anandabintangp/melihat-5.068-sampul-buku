@@ -20,7 +20,7 @@
 
 <!-- Gambar 3 -->
 <figure class="kartografi-embed">
-  <iframe title="Gambar 3 Eksplorasi Analisis Visual Sampul Buku" src="https://anandabintangp.github.io/melihat-5.068-sampul-buku/embeds/eksplorasi-analisis.html?embed=1" height="760" loading="lazy" scrolling="no" allowfullscreen></iframe>
+  <iframe title="Gambar 3 Eksplorasi Analisis Visual Sampul Buku" src="https://anandabintangp.github.io/melihat-5.068-sampul-buku/embeds/gambar-3-dashboard.html?embed=1" height="760" loading="lazy" scrolling="no" allowfullscreen></iframe>
   <figcaption>Gambar 3. Eksplorasi Analisis Visual Sampul Buku</figcaption>
 </figure>
 
