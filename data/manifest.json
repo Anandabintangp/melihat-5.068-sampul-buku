@@ -1,0 +1,6 @@
+{
+  "source": "data(5).csv",
+  "n_books": 5068,
+  "genre_labels": 132,
+  "sha256": "d5f20396eba2dd67af7c9201371ed240136a040e87e01482d0195e66295c4523"
+}
