@@ -1,4 +1,4 @@
-*.zip
-_site/
+assets/covers/
+__pycache__/
+*.pyc
 .DS_Store
-Thumbs.db
