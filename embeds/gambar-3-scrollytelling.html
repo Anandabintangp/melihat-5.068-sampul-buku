@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eksplorasi Analisis Visual Sampul Buku</title>
+<style>
+:root{
+  --ink:#171714;--muted:#6e6961;--paper:#f7f5f0;--panel:#fff;--line:#ddd8cf;
+  --soft:#f3f1ec;--accent:#944832;--shadow:0 16px 42px rgba(33,29,23,.07);
+  --serif:Georgia,"Times New Roman",serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans)}
+a{color:inherit}button,input,select{font:inherit}.top{position:sticky;top:0;z-index:40;background:rgba(247,245,240,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top-inner{max-width:1420px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:14px}.mini-title{font-family:var(--serif);font-size:18px;white-space:nowrap;text-decoration:none}
+.nav{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none;flex:1}.nav::-webkit-scrollbar{display:none}.nav a,.nav button{border:0;background:transparent;border-radius:999px;padding:9px 12px;text-decoration:none;white-space:nowrap;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer}.nav a:hover,.nav button:hover,.nav .active{background:var(--ink);color:#fff}.nav .essay{border:1px solid var(--line);color:var(--accent);background:#fff}.full-link{white-space:nowrap;text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-size:11px;font-weight:800;color:var(--accent)}
+.page{max-width:1420px;margin:auto;padding:30px 18px 72px}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}.hero-copy{max-width:900px}.eyebrow{margin:0 0 8px;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.hero h1{margin:0;font-family:var(--serif);font-size:clamp(38px,5vw,68px);font-weight:400;line-height:1.02;letter-spacing:-.045em}.hero p{max-width:760px;margin:12px 0 0;color:var(--muted);font-size:14px;line-height:1.65}.corpus{flex:0 0 auto;text-align:right}.corpus strong{display:block;font-family:var(--serif);font-size:38px;font-weight:400}.corpus span{font-size:11px;color:var(--muted)}
+.filters{position:sticky;top:61px;z-index:30;display:grid;grid-template-columns:minmax(240px,2fr) repeat(4,minmax(150px,1fr));gap:10px;padding:12px;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.control{width:100%;min-height:50px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:11px 16px;color:var(--ink)}.control:focus{outline:2px solid rgba(148,72,50,.22);border-color:var(--accent)}
+.result-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 2px 13px}.result-row strong{font-size:17px}.result-row span{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.book-card{display:grid;grid-template-columns:122px minmax(0,1fr);gap:18px;min-height:260px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);cursor:pointer;text-align:left;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.book-card:hover{transform:translateY(-3px);border-color:#b8aea0;box-shadow:0 22px 50px rgba(33,29,23,.11)}.book-card:focus-visible{outline:3px solid rgba(148,72,50,.28);outline-offset:2px}.cover{width:122px;aspect-ratio:2/3;overflow:hidden;border:1px solid var(--line);border-radius:13px;background:#e8e4dc}.cover img{width:100%;height:100%;object-fit:cover;display:block}.book-copy{min-width:0;display:flex;flex-direction:column}.book-copy h2{margin:1px 0 8px;font-family:var(--serif);font-size:25px;font-weight:700;line-height:1.05;overflow-wrap:anywhere}.meta-line{margin:0;color:var(--muted);font-size:13px;line-height:1.55}.chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}.chip{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:#faf9f6;font-size:12px;font-weight:800}.dot{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.1)}.pipeline-link{margin-top:auto;padding-top:13px;border-top:1px dashed var(--line);color:var(--muted);font-size:12px;line-height:1.5}.load-more{display:block;margin:28px auto 0;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:#fff;padding:12px 20px;font-size:12px;font-weight:800;cursor:pointer}.empty{grid-column:1/-1;padding:54px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+.dialog{width:min(1120px,calc(100vw - 28px));max-height:calc(100vh - 28px);padding:0;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 36px 100px rgba(0,0,0,.24)}.dialog::backdrop{background:rgba(15,14,12,.66);backdrop-filter:blur(5px)}.dialog-head{position:sticky;top:0;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;background:#fff;border-bottom:1px solid var(--line)}.dialog-head strong{font-family:var(--serif);font-size:22px}.close{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:#fff;font-size:22px;cursor:pointer}.pipeline{padding:20px;display:grid;grid-template-columns:1.05fr 1fr 1fr 1fr 1fr;gap:10px;min-width:980px}.stage{padding:16px;border:1px solid var(--line);border-radius:15px;background:#faf9f6;min-width:0}.stage-no{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:800}.stage h3{margin:12px 0 10px;font-family:var(--serif);font-size:20px;line-height:1.1}.stage p,.stage li{color:var(--muted);font-size:11px;line-height:1.55}.pipeline-cover{width:120px;aspect-ratio:2/3;object-fit:cover;border-radius:9px;border:1px solid var(--line)}.analysis-list{list-style:none;padding:0;margin:0}.analysis-list li{padding:7px 0;border-bottom:1px solid var(--line)}.analysis-list b{color:var(--ink)}.color-strip{display:flex;height:42px;border-radius:8px;overflow:hidden;border:1px solid var(--line);margin:10px 0}.color-part{min-width:2px}.open-goodreads{display:inline-block;margin-top:12px;color:var(--accent);font-size:11px;font-weight:800}.dialog-scroll{overflow:auto}
+body.embed{background:#fff;overflow:hidden}body.embed .top{position:relative}body.embed .mini-title{display:none}body.embed .page{padding:14px;max-width:none}body.embed .hero{margin-bottom:12px}body.embed .hero h1{font-size:36px}body.embed .hero p{font-size:12px}body.embed .corpus{display:none}body.embed .filters{position:relative;top:auto;grid-template-columns:1.7fr repeat(4,1fr);padding:9px;border-radius:13px;box-shadow:none}body.embed .control{min-height:42px;padding:8px 11px;font-size:12px}body.embed .result-row{padding:12px 1px 8px}body.embed .grid{grid-template-columns:repeat(3,1fr);gap:10px}body.embed .book-card{grid-template-columns:78px minmax(0,1fr);min-height:188px;padding:11px;gap:11px;border-radius:15px;box-shadow:none}body.embed .cover{width:78px;border-radius:8px}body.embed .book-copy h2{font-size:17px;margin-bottom:4px}body.embed .meta-line{font-size:10px}.book-card:nth-child(n+7){display:none}body.embed .chip{min-height:26px;padding:4px 7px;font-size:9px;gap:4px}body.embed .dot{width:8px;height:8px}body.embed .chips{gap:4px;margin:8px 0}body.embed .pipeline-link{font-size:9px;padding-top:7px}body.embed .load-more{display:none}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:1fr 1fr 1fr}.filters input{grid-column:1/-1}body.embed .filters{grid-template-columns:1fr 1fr 1fr}body.embed .filters input{grid-column:1/-1}}
+@media(max-width:760px){.top-inner{padding:9px 10px;flex-wrap:wrap}.mini-title{font-size:16px}.nav{order:3;width:100%}.full-link{position:absolute;right:10px;top:9px}.page{padding:20px 10px 50px}.hero{display:block}.corpus{text-align:left;margin-top:13px}.corpus strong{font-size:30px}.filters{position:relative;top:auto;grid-template-columns:1fr 1fr;padding:9px;border-radius:14px}.filters input{grid-column:1/-1}.grid{grid-template-columns:1fr}.book-card{grid-template-columns:100px minmax(0,1fr);min-height:222px;padding:14px;gap:14px;border-radius:18px}.cover{width:100px}.book-copy h2{font-size:21px}.chip{font-size:10px;min-height:31px;padding:5px 9px}.dialog{width:100vw;max-height:100vh;height:100vh;border:0;border-radius:0}.pipeline{grid-template-columns:1fr;min-width:0}.stage{display:grid;grid-template-columns:36px 1fr;column-gap:10px}.stage h3{margin:3px 0 8px}.stage>*:not(.stage-no):not(h3){grid-column:2}.pipeline-cover{width:100px}body.embed{overflow:auto}body.embed .grid{grid-template-columns:1fr 1fr}body.embed .filters{grid-template-columns:1fr 1fr}body.embed .book-card{grid-template-columns:68px minmax(0,1fr)}body.embed .cover{width:68px}}
+@media(max-width:500px){.filters{grid-template-columns:1fr}.filters input{grid-column:auto}.result-row{display:block}.result-row span{display:block;margin-top:4px}.book-card{grid-template-columns:86px minmax(0,1fr)}.cover{width:86px}.book-copy h2{font-size:19px}body.embed .grid{grid-template-columns:1fr}body.embed .book-card:nth-child(n+5){display:none}body.embed .filters{grid-template-columns:1fr 1fr}body.embed .filters input{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <a class="mini-title" href="#catalog">Eksplorasi Sampul</a>
+    <nav class="nav" aria-label="Menu eksplorasi">
+      <a class="active" href="#catalog">Jelajah Sampul</a>
+      <a href="./gambar-4-warna.html" target="_blank">Warna</a>
+      <a href="./gambar-8-tipografi.html" target="_blank">Tipografi</a>
+      <a href="./gambar-9-ilustrasi.html" target="_blank">Gaya Ilustrasi</a>
+      <button id="focusGenre" type="button">Genre</button>
+      <a class="essay" href="https://anandabintangp.github.io/melihat-5.068-sampul-buku/" target="_blank" rel="noopener">Esai Scrollytelling ↗</a>
+    </nav>
+    <a class="full-link" id="fullLink" href="./eksplorasi-analisis.html" target="_blank">Buka penuh ↗</a>
+  </div>
+</header>
+<main class="page" id="catalog">
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Analisis tingkat sampul · 2000–2025</p>
+      <h1>Eksplorasi Analisis Visual Sampul Buku</h1>
+      <p>Telusuri warna dominan, tipografi, gaya ilustrasi, genre, dan jejak analisis komputasional pada 5.068 sampul buku sastra Indonesia.</p>
+    </div>
+    <div class="corpus"><strong>5.068</strong><span>sampul dalam korpus</span></div>
+  </header>
+
+  <section class="filters" aria-label="Filter sampul">
+    <input id="query" class="control" placeholder="Cari judul atau penulis" autocomplete="off">
+    <select id="genre" class="control"><option value="">Semua genre</option></select>
+    <select id="color" class="control"><option value="">Semua warna</option></select>
+    <select id="typeface" class="control"><option value="">Semua tipografi</option></select>
+    <select id="illustration" class="control"><option value="">Semua ilustrasi</option></select>
+  </section>
+
+  <div class="result-row"><strong id="resultCount">Memuat data…</strong><span>Tekan kartu untuk melihat pipeline analisis sampul.</span></div>
+  <section id="bookGrid" class="grid" aria-live="polite"></section>
+  <button id="loadMore" class="load-more" type="button">Tampilkan lebih banyak</button>
+</main>
+
+<dialog id="analysisDialog" class="dialog">
+  <div class="dialog-head"><strong id="dialogTitle">Pipeline Analisis Sampul</strong><button id="closeDialog" class="close" aria-label="Tutup">×</button></div>
+  <div class="dialog-scroll"><div id="pipeline" class="pipeline"></div></div>
+</dialog>
+
+<script>
+const COVER='https://risethumdigsasindo.github.io/Kartografi-Sampul-Sastra-Indonesia/covers/';
+const COLORS={putih:'#f4f1e8',oranye:'#f47a16',cokelat:'#7b462b',biru:'#1477cc',merah:'#d62828',pink:'#ee5f96',hitam:'#171717',kuning:'#f4c20d',ungu:'#7042a8',hijau:'#2f9147',abu:'#8e969d'};
+const embedded=new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top;
+document.body.classList.toggle('embed',embedded);
+const titleCase=s=>String(s||'').replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+const pct=v=>Number.isFinite(Number(v))?Number(v).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1})+'%':'n/a';
+const escapeHtml=s=>String(s??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+let books=[],filtered=[],shown=embedded?6:24;
+
+function addOptions(select,values,labelFn=titleCase){
+  [...new Set(values.filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'id')).forEach(v=>select.add(new Option(labelFn(v),v)));
+}
+function colorChip(book){return `<span class="chip"><i class="dot" style="background:${COLORS[book.dominant_color]||'#bbb'}"></i>${titleCase(book.dominant_color)} ${pct(book.dominant_color_pct)}</span>`}
+function typeChip(book){return `<span class="chip">${escapeHtml(book.typeface||'Tidak terklasifikasi')} ${pct(book.typeface_pct)}</span>`}
+function styleChip(book){return `<span class="chip">${titleCase(book.illustration||'Tidak terklasifikasi')} ${pct(book.illustration_pct)}</span>`}
+function card(book){
+  const button=document.createElement('button');button.type='button';button.className='book-card';button.dataset.id=book.id;
+  const genres=(book.genres||[]).filter(g=>g!=='Sastra Indonesia').slice(0,2).join(' · ')||'Genre tidak tersedia';
+  button.innerHTML=`<div class="cover"><img loading="lazy" decoding="async" src="${COVER+encodeURIComponent(book.image)}" alt="Sampul ${escapeHtml(book.title)}"></div><div class="book-copy"><h2>${escapeHtml(book.title||'Tanpa judul')}</h2><p class="meta-line">${escapeHtml(book.author||'Penulis tidak tersedia')} · ${escapeHtml(book.year||'')} · ${escapeHtml(genres)}</p><div class="chips">${colorChip(book)}${typeChip(book)}${styleChip(book)}</div><div class="pipeline-link">Klik untuk melihat pipeline analisis sampul.</div></div>`;
+  button.addEventListener('click',()=>openPipeline(book));return button;
+}
+function applyFilters(){
+  const q=query.value.trim().toLowerCase(),g=genre.value,c=color.value,t=typeface.value,s=illustration.value;
+  filtered=books.filter(b=>(!q||(`${b.title||''} ${b.author||''}`).toLowerCase().includes(q))&&(!g||(b.genres||[]).includes(g))&&(!c||b.dominant_color===c)&&(!t||b.typeface===t)&&(!s||b.illustration===s));
+  shown=embedded?6:24;render();
+}
+function render(){
+  resultCount.textContent=`${new Intl.NumberFormat('id-ID').format(filtered.length)} buku ditemukan`;
+  bookGrid.replaceChildren();
+  if(!filtered.length){bookGrid.innerHTML='<div class="empty">Tidak ada sampul yang sesuai dengan filter.</div>';loadMore.hidden=true;reportHeight();return}
+  filtered.slice(0,shown).forEach(b=>bookGrid.append(card(b)));
+  loadMore.hidden=embedded||shown>=filtered.length;reportHeight();
+}
+function colorStrip(book){
+  const entries=Object.entries(book.color_breakdown||{});return `<div class="color-strip">${entries.map(([name,value])=>`<div class="color-part" title="${titleCase(name)} ${pct(value)}" style="width:${value}%;background:${COLORS[name]||'#ccc'}"></div>`).join('')}</div>`;
+}
+function openPipeline(book){
+  dialogTitle.textContent=book.title||'Pipeline Analisis Sampul';
+  const ocr=String(book.ocr_text||'').trim()||'Teks tidak terdeteksi atau tidak tersedia.';
+  pipeline.innerHTML=`
+  <section class="stage"><span class="stage-no">1</span><h3>Input sampul</h3><img class="pipeline-cover" src="${COVER+encodeURIComponent(book.image)}" alt="Sampul ${escapeHtml(book.title)}"><ul class="analysis-list"><li><b>Judul:</b> ${escapeHtml(book.title||'')}</li><li><b>Penulis:</b> ${escapeHtml(book.author||'')}</li><li><b>Tahun:</b> ${escapeHtml(book.year||'')}</li></ul></section>
+  <section class="stage"><span class="stage-no">2</span><h3>Analisis warna</h3>${colorStrip(book)}<ul class="analysis-list">${Object.entries(book.color_breakdown||{}).map(([k,v])=>`<li><b>${titleCase(k)}</b> ${pct(v)}</li>`).join('')}</ul></section>
+  <section class="stage"><span class="stage-no">3</span><h3>Deteksi teks</h3><p>${escapeHtml(ocr)}</p><ul class="analysis-list"><li><b>Keyakinan OCR:</b> ${pct(book.ocr_confidence)}</li></ul></section>
+  <section class="stage"><span class="stage-no">4</span><h3>Analisis tipografi</h3><ul class="analysis-list"><li><b>Kategori:</b> ${escapeHtml(book.typeface||'Tidak tersedia')}</li><li><b>Font terdekat:</b> ${escapeHtml(book.font||'Tidak tersedia')}</li><li><b>Skor CLIP:</b> ${pct(book.typeface_pct)}</li></ul></section>
+  <section class="stage"><span class="stage-no">5</span><h3>Gaya ilustrasi</h3><ul class="analysis-list"><li><b>Kategori:</b> ${titleCase(book.illustration||'Tidak tersedia')}</li><li><b>Keyakinan:</b> ${pct(book.illustration_pct)}</li><li><b>Objek dominan:</b> ${titleCase(book.dominant_object||'Tidak tersedia')}</li></ul>${book.url?`<a class="open-goodreads" href="${escapeHtml(book.url)}" target="_blank" rel="noopener">Buka metadata Goodreads ↗</a>`:''}</section>`;
+  analysisDialog.showModal();
+}
+closeDialog.onclick=()=>analysisDialog.close();analysisDialog.addEventListener('click',e=>{if(e.target===analysisDialog)analysisDialog.close()});
+loadMore.onclick=()=>{shown+=24;render()};
+[query,genre,color,typeface,illustration].forEach(el=>el.addEventListener(el===query?'input':'change',applyFilters));
+focusGenre.onclick=()=>{genre.focus();document.getElementById('catalog').scrollIntoView({behavior:'smooth'})};
+function reportHeight(){if(!embedded)return;setTimeout(()=>parent.postMessage({type:'embed-height',height:Math.ceil(document.documentElement.scrollHeight)},'*'),40)}
+fetch('../data/books.min.json').then(r=>{if(!r.ok)throw new Error('Data buku tidak dapat dimuat');return r.json()}).then(data=>{
+  books=data;addOptions(genre,books.flatMap(b=>b.genres||[]).filter(g=>g!=='Sastra Indonesia'),s=>s);addOptions(color,books.map(b=>b.dominant_color));addOptions(typeface,books.map(b=>b.typeface),s=>s);addOptions(illustration,books.map(b=>b.illustration));filtered=books;render();
+}).catch(err=>{resultCount.textContent=err.message;bookGrid.innerHTML='<div class="empty">Data eksplorasi gagal dimuat.</div>'});
+addEventListener('resize',reportHeight);new ResizeObserver(reportHeight).observe(document.body);
+</script>
+</body></html>
