@@ -17,3 +17,6 @@ http://localhost:8000/embeds/eksplorasi-analisis.html?embed=1
 ```
 
 Jangan membuka HTML melalui `file:///`, karena browser akan memblokir pembacaan JSON lokal.
+
+## Deployment
+Gunakan GitHub Pages `Deploy from a branch`, branch `main`, folder `/(root)`. Workflow custom Pages telah dinonaktifkan.
