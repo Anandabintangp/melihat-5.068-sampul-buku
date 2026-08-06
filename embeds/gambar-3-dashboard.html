@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eksplorasi Analisis Visual Sampul</title>
+<style>
+:root{--bg:#ffffff;--panel:#ffffff;--ink:#181818;--muted:#666;--line:#e7e7e7;--accent:#111;--accent-soft:#f5f5f5;--shadow:0 12px 28px rgba(0,0,0,.06);--radius:18px;--serif:Georgia,"Times New Roman",serif;--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}a{color:inherit}button,input,select{font:inherit}button{cursor:pointer}
+body.embedded .open-links a.story{display:none}
+.shell{max-width:1240px;margin:0 auto;padding:14px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:12px}
+.titlebox{display:grid;gap:5px}.eyebrow{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#555;font-weight:800}.title{margin:0;font:400 clamp(28px,4vw,46px)/1.04 var(--serif);letter-spacing:-.03em}.sub{margin:0;color:var(--muted);font-size:14px;line-height:1.5;max-width:70ch}.open-links{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.open-links a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid var(--line);padding:10px 14px;border-radius:999px;background:#fff;font-size:12px;font-weight:700}.open-links a:hover{border-color:#111}
+.nav{display:flex;gap:8px;overflow:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:14px}.nav::-webkit-scrollbar{display:none}.nav button{border:1px solid var(--line);background:#fff;color:#555;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:800;white-space:nowrap}.nav button.active,.nav button:hover{background:#111;color:#fff;border-color:#111}
+.panel{display:none}.panel.active{display:block;animation:fade .18s ease}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.pad{padding:18px}.panelhead{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;margin-bottom:14px}.panelhead h2{margin:0;font:400 clamp(24px,3vw,36px)/1.06 var(--serif)}.panelhead p{margin:0;color:var(--muted);font-size:13px;line-height:1.5;max-width:72ch}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{padding:18px}.metric b{display:block;font:700 clamp(24px,3.4vw,40px)/1 var(--sans);margin-bottom:6px}.metric span{color:var(--muted);font-size:13px}
+.grid2{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.summary-card h3,.chart-card h3{margin:0 0 10px;font-size:14px;letter-spacing:.02em}.summary-card p{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.45}.ribbon{display:flex;height:48px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#f6f6f6}.color-seg{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:#444}.swatch{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.08);display:inline-block}
+.bar-list{display:grid;gap:10px}.bar-row{display:grid;grid-template-columns:minmax(90px,140px) 1fr auto;gap:12px;align-items:center;font-size:13px}.bar-row span{font-weight:600}.bar-track{height:12px;background:#f1f1f1;border-radius:999px;overflow:hidden}.bar-fill{height:100%;border-radius:999px;background:#111}.bar-row b{font-size:12px}
+.chart-card{padding:18px}.selector{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.selector label{display:grid;gap:6px;font-size:12px;font-weight:700;color:#555}.selector select,.filters input,.filters select{min-height:40px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px 12px;color:#181818}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:14px}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}.table th{background:#fafafa;position:sticky;top:0}
+canvas#trendCanvas{width:100%;height:280px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.filters{display:grid;grid-template-columns:2fr repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.countline{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.countline b{font-size:13px}.book-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}.book{display:grid;grid-template-columns:82px 1fr;gap:12px;text-decoration:none;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow)}.book:hover{transform:translateY(-1px)}.cover-wrap{width:82px}.cover-wrap img{width:82px;height:120px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:#f3f3f3}.book-body{display:grid;gap:8px;align-content:start;min-width:0}.book b{font-size:14px;line-height:1.25}.book small{color:var(--muted);font-size:12px}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;background:#f6f6f6;border:1px solid var(--line);font-size:11px;font-weight:700;color:#444}.chip .dot{width:9px;height:9px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.08)}.pipe{font-size:11px;color:#666;line-height:1.45;border-top:1px dashed var(--line);padding-top:8px}.morewrap{display:flex;justify-content:center;margin-top:14px}.more{padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:800}
+.loading{padding:24px;text-align:center;color:#666}.embed-foot{margin-top:14px;color:#666;font-size:11px;line-height:1.5}
+@keyframes fade{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(max-width:900px){.metrics,.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.top{flex-direction:column}.open-links{justify-content:flex-start}}
+@media(max-width:640px){.shell{padding:10px}.metrics,.grid3,.filters{grid-template-columns:1fr}.panelhead{flex-direction:column;align-items:flex-start}.book-grid{grid-template-columns:1fr}.book{grid-template-columns:72px 1fr}.cover-wrap,.cover-wrap img{width:72px;height:106px}.title{font-size:32px}.sub{font-size:12px}.legend{grid-template-columns:1fr}}
+</style>
+
+<style id="final-dashboard-patch">
+html,body{background:#fff!important}
+body.embedded .top{display:none!important}
+body.embedded .shell{padding:10px!important}
+body.embedded .nav{margin:0 0 10px!important;position:sticky;top:0;z-index:15;background:rgba(255,255,255,.96);padding:4px 0 8px!important;backdrop-filter:blur(10px)}
+body.embedded .embed-foot{display:none!important}
+.card{box-shadow:0 8px 24px rgba(0,0,0,.045)!important}
+.nav button{border-color:#dedede!important}
+.nav button.active,.nav button:hover{background:#171717!important;border-color:#171717!important}
+.pipeline{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding-top:8px;border-top:1px dashed #ddd;color:#666;font-size:10px;line-height:1.35}
+.pipeline .step{padding:4px 6px;border:1px solid #e2e2e2;border-radius:999px;background:#fafafa;font-weight:700;color:#444}
+.pipeline .arrow{color:#999}
+.book{transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+.book:hover{transform:translateY(-2px);border-color:#bbb;box-shadow:0 14px 30px rgba(0,0,0,.08)}
+.load-help{margin-top:8px;font-size:11px;color:#777;line-height:1.45}
+@media(max-width:640px){body.embedded .shell{padding:7px!important}.nav button{padding:8px 11px!important}.book{grid-template-columns:66px 1fr!important}.cover-wrap,.cover-wrap img{width:66px!important}.cover-wrap img{height:98px!important}.pipeline{font-size:9px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div class="titlebox">
+      <p class="eyebrow">Gambar 3</p>
+      <h1 class="title">Eksplorasi Analisis Visual Sampul Buku</h1>
+      <p class="sub">Jelajah warna, tipografi, ilustrasi, genre, dan sampul buku secara interaktif. Tampilan ini menonjolkan unsur yang paling dominan agar pembacaan visual lebih cepat.</p>
+    </div>
+    <div class="open-links">
+      <a id="openFull" href="#" target="_blank" rel="noopener">Buka eksplorasi penuh ↗</a>
+      <a class="story" href="https://anandabintangp.github.io/melihat-5.068-sampul-buku/" target="_blank" rel="noopener">Buka scrollytelling ↗</a>
+    </div>
+  </header>
+  <nav id="nav" class="nav">
+    <button class="active" data-target="beranda">Ringkasan</button>
+    <button data-target="warna">Warna</button>
+    <button data-target="tipografi">Tipografi</button>
+    <button data-target="ilustrasi">Ilustrasi</button>
+    <button data-target="genre">Genre</button>
+    <button data-target="jelajah">Jelajah Buku</button>
+  </nav>
+
+  <main>
+    <section id="beranda" class="panel active">
+      <div class="metrics">
+        <article class="card metric"><b id="mBooks">…</b><span>sampul dianalisis</span></article>
+        <article class="card metric"><b id="mGenres">…</b><span>label genre mentah</span></article>
+        <article class="card metric"><b id="mColors">11</b><span>kategori warna</span></article>
+        <article class="card metric"><b id="mStyles">10</b><span>corak ilustrasi</span></article>
+      </div>
+      <div class="grid2" style="margin-top:14px">
+        <article class="card pad">
+          <div class="panelhead"><div><h2>Pembacaan cepat</h2><p>Panel ini merangkum kecenderungan visual utama dari seluruh korpus.</p></div></div>
+          <div class="grid3">
+            <div class="summary-card">
+              <h3>Warna dominan global</h3>
+              <div id="homeColors" class="ribbon"></div>
+              <div id="homeColorsLegend" class="legend"></div>
+            </div>
+            <div class="summary-card">
+              <h3>Tipografi dominan global</h3>
+              <div id="homeTypefaces" class="bar-list"></div>
+            </div>
+            <div class="summary-card">
+              <h3>Ilustrasi dominan global</h3>
+              <div id="homeIllustrations" class="bar-list"></div>
+            </div>
+          </div>
+        </article>
+        <article class="card pad">
+          <div class="panelhead"><div><h2>Genre yang paling sering muncul</h2><p>Proporsi sepuluh label genre mentah teratas dalam korpus.</p></div></div>
+          <div id="genreBars" class="bar-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="warna" class="panel">
+      <article class="card pad">
+        <div class="panelhead"><div><h2>Warna dominan sampul</h2><p>Bagian ini menampilkan komposisi warna global dan distribusi warna dominan pada genre yang dipilih.</p></div></div>
+        <div class="grid2">
+          <div class="chart-card card">
+            <h3>Komposisi warna seluruh korpus</h3>
+            <div id="globalColors" class="ribbon"></div>
+            <div id="globalColorLegend" class="legend"></div>
+          </div>
+          <div class="chart-card card">
+            <div class="selector"><label>Genre<select id="colorGenre"></select></label></div>
+            <h3 style="margin-top:10px">Warna dominan menurut genre</h3>
+            <div id="genreColorBars" class="bar-list"></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="tipografi" class="panel">
+      <article class="card pad">
+        <div class="panelhead"><div><h2>Tipografi dominan</h2><p>Ringkasan ini memprioritaskan kelas tipografi yang paling menonjol pada sampul.</p></div></div>
+        <div id="typefaceBars" class="bar-list"></div>
+      </article>
+    </section>
+
+    <section id="ilustrasi" class="panel">
+      <article class="card pad">
+        <div class="panelhead"><div><h2>Gaya ilustrasi dominan</h2><p>Proporsi gaya ilustrasi dibaca secara global, lalu dibandingkan dengan tren tahunan.</p></div></div>
+        <div class="grid2">
+          <div class="chart-card card">
+            <h3>Distribusi gaya ilustrasi</h3>
+            <div id="illustrationBars" class="bar-list"></div>
+          </div>
+          <div class="chart-card card">
+            <h3>Tren tiga gaya ilustrasi utama per tahun</h3>
+            <canvas id="trendCanvas"></canvas>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="genre" class="panel">
+      <article class="card pad">
+        <div class="panelhead"><div><h2>Relasi genre</h2><p>Genre mentah kerap hadir berpasangan. Tabel berikut menampilkan pasangan dengan koefisien tumpang tindih tertinggi.</p></div></div>
+        <div class="tablewrap">
+          <table class="table">
+            <thead><tr><th>Pasangan genre</th><th>N Genre 1</th><th>N Genre 2</th><th>Overlap</th><th>Koefisien</th></tr></thead>
+            <tbody id="overlapBody"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section id="jelajah" class="panel">
+      <article class="card pad">
+        <div class="panelhead"><div><h2>Jelajah per buku</h2><p>Setiap kartu merangkum hasil pembacaan dominan: warna, tipografi, ilustrasi, dan alur pipeline analisis visual pada sampul tersebut.</p></div></div>
+        <div class="filters">
+          <input id="q" type="search" placeholder="Cari judul atau penulis">
+          <select id="fGenre"></select>
+          <select id="fColor"></select>
+          <select id="fTypeface"></select>
+          <select id="fStyle"></select>
+        </div>
+        <div class="countline"><b id="bookCount">…</b><span style="font-size:12px;color:#666">Klik kartu untuk membuka sumber jika tersedia.</span></div>
+        <div id="bookGrid" class="book-grid"></div>
+        <div class="morewrap"><button id="more" class="more">Tampilkan lebih banyak</button></div>
+      </article>
+    </section>
+
+    <div id="loading" class="loading">Memuat data analisis…</div>
+  </main>
+
+  <div class="embed-foot">Embed ini dibuat untuk kebutuhan publikasi. Jika ruang embed sempit, gunakan tombol <b>Buka eksplorasi penuh</b> agar semua panel lebih nyaman dibaca.</div>
+</div>
+<script>
+const COLORS={putih:'#f4f1e8',oranye:'#f47a16',cokelat:'#7b462b',biru:'#1477cc',merah:'#d62828',pink:'#ee5f96',hitam:'#171717',kuning:'#f4c20d',ungu:'#7042a8',hijau:'#2f9147',abu:'#8e969d'};
+const COVER='https://risethumdigsasindo.github.io/Kartografi-Sampul-Sastra-Indonesia/covers/';
+const embedded=new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top;document.body.classList.toggle('embedded',embedded);
+const nav=document.getElementById('nav'),mBooks=document.getElementById('mBooks'),mGenres=document.getElementById('mGenres'),homeColors=document.getElementById('homeColors'),homeColorsLegend=document.getElementById('homeColorsLegend'),homeTypefaces=document.getElementById('homeTypefaces'),homeIllustrations=document.getElementById('homeIllustrations'),globalColors=document.getElementById('globalColors'),globalColorLegend=document.getElementById('globalColorLegend'),colorGenre=document.getElementById('colorGenre'),genreColorBars=document.getElementById('genreColorBars'),typefaceBars=document.getElementById('typefaceBars'),illustrationBars=document.getElementById('illustrationBars'),genreBars=document.getElementById('genreBars'),overlapBody=document.getElementById('overlapBody'),q=document.getElementById('q'),fGenre=document.getElementById('fGenre'),fColor=document.getElementById('fColor'),fTypeface=document.getElementById('fTypeface'),fStyle=document.getElementById('fStyle'),bookCount=document.getElementById('bookCount'),bookGrid=document.getElementById('bookGrid'),more=document.getElementById('more'),loading=document.getElementById('loading'),trendCanvas=document.getElementById('trendCanvas'),openFull=document.getElementById('openFull');
+const fmt=n=>new Intl.NumberFormat('id-ID').format(n), pct=n=>Number(n).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+let S,books=[],visible=24;
+openFull.href=location.href.replace(/[?&]embed=1/g,'').replace(/\?$/,'');
+function label(k){if(!k)return '';const maps={putih:'Putih',oranye:'Oranye',cokelat:'Cokelat',biru:'Biru',merah:'Merah',pink:'Pink',hitam:'Hitam',kuning:'Kuning',ungu:'Ungu',hijau:'Hijau',abu:'Abu',Serif:'Serif',Script:'Script','Sans-serif':'Sans-serif',Fancy:'Fancy'};return maps[k]||S?.labels?.illustrations?.[k]||k.replace(/_/g,' ').replace(/\b\w/g,m=>m.toUpperCase())}
+function textColor(hex){hex=hex.replace('#','');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return ((r*299+g*587+b*114)/1000)>160?'#171714':'#fff'}
+function topEntries(obj,limit=null){const arr=Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]);return limit?arr.slice(0,limit):arr}
+function bars(el,obj,opts={}){const {colorMode=false, limit=null}=opts;el.innerHTML='';topEntries(obj,limit).forEach(([k,v])=>{const row=document.createElement('div');row.className='bar-row';const c=colorMode?(COLORS[k]||'#111'):'#111';row.innerHTML=`<span>${label(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.max(1,v)}%;background:${c}"></div></div><b>${pct(v)}</b>`;el.append(row)})}
+function ribbon(el,obj,legend,limit=null){el.innerHTML='';if(legend)legend.innerHTML='';topEntries(obj,limit).forEach(([k,v])=>{const seg=document.createElement('div');seg.className='color-seg';seg.style.width=v+'%';seg.style.background=COLORS[k]||'#ccc';seg.style.color=textColor(COLORS[k]||'#ccc');seg.title=label(k)+' '+pct(v);if(v>=8)seg.textContent=Math.round(v)+'%';el.append(seg);if(legend){const li=document.createElement('div');li.className='legend-item';li.innerHTML=`<span class="swatch" style="background:${COLORS[k]||'#ccc'}"></span>${label(k)} <b>${pct(v)}</b>`;legend.append(li)}})}
+function opts(el,arr,first){el.innerHTML=`<option value="">${first}</option>`+(arr||[]).map(v=>`<option value="${v}">${label(v)}</option>`).join('')}
+function renderColorGenre(){if(!S||!S.genres||!S.genres[colorGenre.value])return;bars(genreColorBars,S.genres[colorGenre.value].colors,{colorMode:true});reportHeight()}
+function drawTrend(){if(!S)return;const c=trendCanvas,box=c.getBoundingClientRect();if(!box.width)return;const d=Math.min(2,devicePixelRatio||1);c.width=box.width*d;c.height=box.height*d;const x=c.getContext('2d');x.scale(d,d);const W=box.width,H=box.height,p={l:38,r:10,t:18,b:34},rows=S.yearly_illustration.filter(r=>r.year>=2000&&r.year<=2025),max=60;x.clearRect(0,0,W,H);x.font='10px system-ui';for(let v=0;v<=60;v+=15){const y=p.t+(H-p.t-p.b)*(1-v/max);x.strokeStyle='#ededed';x.beginPath();x.moveTo(p.l,y);x.lineTo(W-p.r,y);x.stroke();x.fillStyle='#777';x.fillText(v+'%',4,y+3)}rows.forEach((r,i)=>{if(i%5===0||i===rows.length-1){const px=p.l+i*(W-p.l-p.r)/(rows.length-1);x.fillStyle='#777';x.fillText(r.year,px-10,H-10)}});function line(k,col){x.strokeStyle=col;x.lineWidth=2.4;x.beginPath();rows.forEach((r,i)=>{const px=p.l+i*(W-p.l-p.r)/(rows.length-1),py=p.t+(H-p.t-p.b)*(1-(r[k]||0)/max);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()}line('kartunal','#1477cc');line('minimalis','#2f9147');line('ekspresionisme','#d94d32');x.fillStyle='#1477cc';x.fillText('Kartunal',p.l,12);x.fillStyle='#2f9147';x.fillText('Minimalis',p.l+70,12);x.fillStyle='#d94d32';x.fillText('Ekspresionisme',p.l+150,12)}
+function chipColor(name){return COLORS[name]||'#bbb'}
+function renderBooks(){const qv=q.value.trim().toLowerCase(),g=fGenre.value,c=fColor.value,t=fTypeface.value,st=fStyle.value;const f=books.filter(b=>(!qv||((b.title||'')+' '+(b.author||'')).toLowerCase().includes(qv))&&(!g||(b.genres||[]).includes(g))&&(!c||b.dominant_color===c)&&(!t||b.typeface===t)&&(!st||b.illustration===st));bookCount.textContent=fmt(f.length)+' buku ditemukan';bookGrid.innerHTML='';f.slice(0,visible).forEach(b=>{const a=document.createElement('a');a.className='book';a.href=b.url||'#';a.target='_blank';a.rel='noopener';const genreText=(b.genres||[]).slice(0,2).join(' · ');a.innerHTML=`<div class="cover-wrap"><img loading="lazy" src="${COVER+encodeURIComponent(b.image)}" alt="Sampul ${b.title||''}"></div><div class="book-body"><b>${b.title||'Tanpa judul'}</b><small>${b.author||'Penulis tidak tersedia'}${b.year?` · ${b.year}`:''}${genreText?` · ${genreText}`:''}</small><div class="chips"><span class="chip"><span class="dot" style="background:${chipColor(b.dominant_color)}"></span>${label(b.dominant_color)||'Warna'}</span><span class="chip">${label(b.typeface)||'Tipografi'}</span><span class="chip">${label(b.illustration)||'Ilustrasi'}</span></div><div class="pipeline" aria-label="Pipeline analisis sampul"><span class="step">Sampul</span><span class="arrow">→</span><span class="step">OCR</span><span class="arrow">→</span><span class="step">Warna</span><span class="arrow">→</span><span class="step">Tipografi</span><span class="arrow">→</span><span class="step">Ilustrasi</span></div></div>`;bookGrid.append(a)});more.hidden=f.length<=visible||embedded;reportHeight()}
+function activate(id,focus=true){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.target===id));if(id==='ilustrasi')setTimeout(drawTrend,60);if(focus&&!embedded)history.replaceState(null,'','#'+id);reportHeight()}
+nav.addEventListener('click',e=>{const b=e.target.closest('button[data-target]');if(!b)return;activate(b.dataset.target)});
+async function loadJSON(paths){let last;for(const path of paths){try{const r=await fetch(new URL(path,location.href));if(r.ok)return await r.json();last=new Error('HTTP '+r.status+' pada '+path)}catch(e){last=e}}throw last||new Error('Berkas data tidak ditemukan')}Promise.all([loadJSON(['../data/summary.json','./data/summary.json']),loadJSON(['../data/books.min.json','./data/books.min.json'])]).then(([s,b])=>{S=s;books=b;loading.remove();mBooks.textContent=fmt(S.metadata.n_books);mGenres.textContent=fmt(S.metadata.raw_genre_labels);ribbon(homeColors,S.global.colors,homeColorsLegend,5);bars(homeTypefaces,S.global.typeface_pct,{limit:4});bars(homeIllustrations,S.global.illustration_pct,{limit:5});ribbon(globalColors,S.global.colors,globalColorLegend);bars(typefaceBars,S.global.typeface_pct);bars(illustrationBars,S.global.illustration_pct);bars(genreBars,Object.fromEntries(S.raw_genre_top.slice(0,10).map(x=>[x.genre,x.count/S.metadata.n_books*100])));S.orders.genres.forEach(g=>colorGenre.add(new Option(g,g)));colorGenre.value='Romansa';colorGenre.onchange=renderColorGenre;renderColorGenre();overlapBody.innerHTML=S.cooccurrence.slice(0,14).map(x=>`<tr><td>${x.left} × ${x.right}</td><td>${fmt(x.left_n)}</td><td>${fmt(x.right_n)}</td><td>${fmt(x.overlap)}</td><td><b>${pct(x.overlap_coefficient)}</b></td></tr>`).join('');opts(fGenre,S.orders.genres,'Semua genre');opts(fColor,S.orders.colors,'Semua warna dominan');opts(fTypeface,S.orders.typefaces,'Semua tipografi dominan');opts(fStyle,S.orders.illustrations,'Semua ilustrasi dominan');[q,fGenre,fColor,fTypeface,fStyle].forEach(el=>el.addEventListener(el===q?'input':'change',()=>{visible=24;renderBooks()}));more.onclick=()=>{visible+=24;renderBooks()};renderBooks();drawTrend();const hash=location.hash.slice(1);if(hash&&document.getElementById(hash))activate(hash,false);reportHeight()}).catch(e=>{loading.innerHTML='<b>Data eksplorasi belum dapat dimuat.</b><div class="load-help">Jalankan localhost dari folder utama proyek agar folder <code>data</code> dan <code>embeds</code> berada pada tingkat yang benar.<br>'+String(e.message).replace(/[<>]/g,'')+'</div>'});
+function reportHeight(){try{const h=Math.ceil(document.documentElement.scrollHeight);parent.postMessage({type:'kartografi-embed-height',height:h},'*');parent.postMessage({type:'embed-height',height:h},'*')}catch(e){}}
+addEventListener('load',reportHeight);addEventListener('resize',reportHeight);
+</script>
+</body>
+</html>
