@@ -131,7 +131,13 @@ body.embed .pager{display:flex}
 const COVER='https://risethumdigsasindo.github.io/Kartografi-Sampul-Sastra-Indonesia/covers/';
 const COLORS={putih:'#f4f1e8',oranye:'#f47a16',cokelat:'#7b462b',biru:'#1477cc',merah:'#d62828',pink:'#ee5f96',hitam:'#171717',kuning:'#f4c20d',ungu:'#7042a8',hijau:'#2f9147',abu:'#8e969d'};
 const embedded=new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top;document.body.classList.toggle('embed',embedded);
-const fmt=n=>new Intl.NumberFormat('id-ID').format(n);const pct=n=>Number(n).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+const fmt=n=>new Intl.NumberFormat('id-ID').format(n);
+const pct=n=>{
+  const v=Number(n);
+  return Number.isFinite(v)
+    ? v.toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1})+'%'
+    : 'Tidak tersedia';
+};
 const esc=s=>String(s??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
 const titleCase=s=>String(s||'').replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
 let summary,books=[],filtered=[],shown=24,currentPage=0;
@@ -140,8 +146,8 @@ function contrast(hex){hex=hex.replace('#','');const r=parseInt(hex.slice(0,2),1
 function renderBars(el,obj,useColor=false){el.innerHTML='';Object.entries(obj).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{el.insertAdjacentHTML('beforeend',`<div class="bar-row"><span>${label(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.max(1,v)}%;background:${useColor?(COLORS[k]||'#934734'):'#934734'}"></div></div><b>${pct(v)}</b></div>`)});}
 function addOptions(el,values,first,formatter=label){el.innerHTML=`<option value="">${first}</option>`+[...new Set(values.filter(Boolean))].map(v=>`<option value="${esc(v)}">${esc(formatter(v))}</option>`).join('')}
 function colorChip(b){return b.dominant_color?`<span class="chip"><i class="dot" style="background:${COLORS[b.dominant_color]||'#bbb'}"></i>${titleCase(b.dominant_color)} ${pct(b.dominant_color_pct)}</span>`:''}
-function typeChip(b){return b.typeface?`<span class="chip">${esc(b.typeface)} ${pct(b.typeface_pct)}</span>`:''}
-function styleChip(b){return b.illustration?`<span class="chip">${label(b.illustration)} ${pct(b.illustration_pct)}</span>`:''}
+function typeChip(b){return b.typeface?`<span class="chip">${esc(b.typeface)}${Number.isFinite(Number(b.typeface_pct))?' '+pct(b.typeface_pct):''}</span>`:''}
+function styleChip(b){return b.illustration?`<span class="chip">${label(b.illustration)}${Number.isFinite(Number(b.illustration_pct))?' '+pct(b.illustration_pct):''}</span>`:''}
 function makeCard(b){const button=document.createElement('button');button.type='button';button.className='book-card';const genres=(b.genres||[]).filter(g=>g!=='Sastra Indonesia').slice(0,2).join(' · ')||'Genre tidak tersedia';button.innerHTML=`<div class="cover"><img loading="lazy" decoding="async" src="${COVER+encodeURIComponent(b.image)}" alt="Sampul ${esc(b.title)}"></div><div class="book-copy"><h3>${esc(b.title||'Tanpa judul')}</h3><p class="meta">${esc(b.author||'Penulis tidak tersedia')} · ${esc(b.year||'')} · ${esc(genres)}</p><div class="chips">${colorChip(b)}${typeChip(b)}${styleChip(b)}</div><div class="pipeline-note">Klik untuk melihat pipeline analisis sampul.</div></div>`;button.onclick=()=>openPipeline(b);return button}
 function embedPageSize(){return innerWidth<=720?2:(innerWidth<=1040?4:6)}
 function filterBooks(){const q=query.value.trim().toLowerCase(),g=bookGenre.value,c=bookColor.value,t=bookType.value,s=bookStyle.value;filtered=books.filter(b=>(!q||(`${b.title||''} ${b.author||''}`).toLowerCase().includes(q))&&(!g||(b.genres||[]).includes(g))&&(!c||b.dominant_color===c)&&(!t||b.typeface===t)&&(!s||b.illustration===s));shown=24;currentPage=0;renderBooks()}
